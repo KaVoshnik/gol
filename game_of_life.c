@@ -1,23 +1,61 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <sys/select.h>
+#include <termios.h>
+#include <time.h>
+#include <unistd.h>
 
-int main(void) {
-  printf("goida");
+#define ROWS 25
+#define COLUMN 80
 
+int **init_world();
+void print_world(int **world); // this fix(output matrix world)
+int get_live_status(int **world, int rows, int cols);
+void read_point_neighbors(int **world, int rows, int cols);
+int count_live_neighbors();
+void next_gen();
+void copy_world();
+int keyinp(); // this fix(input keyboard)
+
+int main() {
+  int **world = init_world();
+  print_world(world);
+
+  free(world);
   return 0;
 }
 
-void init_world() {}
+int **init_world() {
+  int **world = malloc(ROWS * COLUMN * sizeof(int) + ROWS * sizeof(int *));
+  int *line = (int *)(world + ROWS);
+  int input;
 
-void print_world() {}
+  for (int i = 0; i < ROWS; i++) {
+    world[i] = line + i * COLUMN;
+  }
 
-int get_live_count() {}
+  for (int i = 0; i < ROWS; i++) {
+    for (int j = 0; j < COLUMN; j++) {
+      scanf("%d", &input);
+      world[i][j] = input;
+    }
+  }
 
-void read_point_neighbors() {}
+  return world;
+}
 
-int count_live_neighbors() {}
+void print_world(int **world) { }
 
-void next_gen() {}
+int get_live_status(int **world, int rows, int cols) {
+  int status;
 
-void copy_world() {}
+    if (matrix[rows][column] == 0) {
+        status = alive(world, rows, column);
+    } else {
+        status = dead(world, rows, column);
+    }
 
-int cmp_world() {}
+    return status;
+}
+
+void read_point_neighbors(int **world, int rows, int cols) {}
