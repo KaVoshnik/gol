@@ -1,16 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/select.h>
-#include <termios.h>
-#include <time.h>
-#include <unistd.h>
 
 #define ROWS 25
 #define COLUMN 80
 
 int **init_world();
-void print_world(int **world); // this fix(output matrix world)
+void print_world(int **world);
 int get_live_status(int **world, int rows, int cols);
+int alive(int **world, int rows, int cols);
+int dead(int **world, int rows, int cols);
 void read_point_neighbors(int **world, int rows, int cols);
 int count_live_neighbors();
 void next_gen();
@@ -44,18 +42,32 @@ int **init_world() {
   return world;
 }
 
-void print_world(int **world) { }
+void print_world(int **world) { 
+  for (int i = 0; i < ROWS; ++i) {
+    if (world[i][0] == 0)
+        printf(" ");
+    else
+        printf("o");
+    for (int j = 1; j < COLUMN; ++j) {
+        if (world[i][j] == 0)
+            printf(" ");
+        else
+            printf("o");
+    }
+    printf("\n");
+  }
+}
 
 int get_live_status(int **world, int rows, int cols) {
   int status;
 
-    if (matrix[rows][column] == 0) {
-        status = alive(world, rows, column);
+    if (world[rows][cols] == 0) {
+        status = alive(world, rows, cols);
     } else {
-        status = dead(world, rows, column);
+        status = dead(world, rows, cols);
     }
 
     return status;
 }
 
-void read_point_neighbors(int **world, int rows, int cols) {}
+// void read_point_neighbors(int **world, int rows, int cols) {} 
